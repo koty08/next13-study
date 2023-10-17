@@ -1,13 +1,13 @@
+import commonFetch from "@/app/lib/commonFetch";
+import { PostData } from "@/app/posts/[category]/page";
 import DeleteButton from "@/components/posts/DeleteButton";
-import { PostData } from "@/components/posts/PostListView";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 export default async function Post({ params }: { params: { id: string } }) {
-  const res = await fetch(`http://localhost:3000/api/post?id=${params.id}`, { cache: "no-store" });
+  const post = await commonFetch<PostData>("/post", { id: params.id }, { cache: "no-store" });
   // not found handling
-  if (res.status !== 200) return notFound();
-  const post: PostData = await res.json();
+  if (!post) return notFound();
 
   return (
     <div className="mt-[64px] flex justify-center">

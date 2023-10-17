@@ -11,9 +11,9 @@ export default function useForm<T>({ initialVal, onSubmit, validator }: useFormP
   const [errors, setErrors] = useState<Record<keyof T, string>>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = event.target;
-    setValues({ ...values, [name]: value });
+    setValues({ ...values, [name]: name === "categoryId" ? Number(value) : value });
   };
 
   const handleSubmit = async () => {

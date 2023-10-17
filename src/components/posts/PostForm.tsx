@@ -3,20 +3,24 @@
 import { useRouter } from "next/navigation";
 import Button from "../common/Button";
 import useForm from "@/hooks/useForm";
+import { Category } from "@/app/categorys/page";
+import commonFetch from "@/app/lib/commonFetch";
 
 interface PostPayload {
   title: string;
   content: string;
   author: string;
+  categoryId: number;
 }
 
 interface PostFormProps {
   type: "CREATE" | "UPDATE";
   post_id?: string;
   originalData?: PostPayload;
+  categorys: Category[];
 }
 
-export default function PostForm({ type, post_id, originalData }: PostFormProps) {
+export default function PostForm({ type, post_id, originalData, categorys }: PostFormProps) {
   const router = useRouter();
   const { values, errors, isLoading, handleChange, handleSubmit } = useForm<PostPayload>({
     initialVal: originalData
@@ -25,17 +29,14 @@ export default function PostForm({ type, post_id, originalData }: PostFormProps)
           title: "",
           author: "",
           content: "",
+          categoryId: 1,
         },
     onSubmit: async (values) => {
-      const res = await fetch(type === "CREATE" ? "http://localhost:3000/api/post" : `http://localhost:3000/api/post?id=${post_id}`, {
+      const res = await commonFetch<{ success: boolean }>(type === "CREATE" ? "/post" : `/post?id=${post_id}`, undefined, {
         method: type === "CREATE" ? "POST" : "PUT",
-        body: JSON.stringify({
-          title: values.title,
-          content: values.content,
-          author: values.author,
-        }),
-      }).then((response) => response.json());
-      if (res.success) {
+        body: JSON.stringify(values),
+      });
+      if (res && res.success) {
         router.push("/posts");
         router.refresh();
       }
@@ -58,6 +59,16 @@ export default function PostForm({ type, post_id, originalData }: PostFormProps)
         />
         <p className="text-red-600 font-bold text-sm">{errors?.content}</p>
       </label>
+      <div className="block">
+        <span className="block font-bold text-slate-700">카테고리</span>
+        <select name="categoryId" value={values.categoryId} onChange={handleChange} className="mt-1 border border-teal-400">
+          {categorys.map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.name}
+            </option>
+          ))}
+        </select>
+      </div>
       <div className="flex mt-2 gap-2 justify-end">
         <Button text={type === "CREATE" ? "생성" : "수정"} onClick={handleSubmit} className="w-fit" disabled={isLoading} />
         <Button text="뒤로가기" onClick={() => router.back()} className="w-fit" />
@@ -94,10 +105,11 @@ function DefaultInput({
 }
 
 function PostValidator({ title, author, content }: PostPayload) {
-  const errors: PostPayload = {
+  const errors: Record<keyof PostPayload, string> = {
     title: "",
     author: "",
     content: "",
+    categoryId: "",
   };
 
   if (!title) {

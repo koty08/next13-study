@@ -2,14 +2,14 @@
 
 import { useRouter } from "next/navigation";
 import Button from "../common/Button";
+import commonFetch from "@/app/lib/commonFetch";
 
 export default function DeleteButton({ id }: { id: string }) {
   const router = useRouter();
 
   const onDeleteClicked = async () => {
-    const res = await fetch(`http://localhost:3000/api/post?id=${id}`, { method: "DELETE" }).then((response) => response.json());
-    console.log(res);
-    if (res.success) {
+    const res = await commonFetch<{ success: boolean }>(`/post`, { id: id }, { method: "DELETE" });
+    if (res && res.success) {
       router.push("/posts");
       router.refresh();
     }
