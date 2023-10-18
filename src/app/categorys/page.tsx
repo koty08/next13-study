@@ -1,6 +1,7 @@
 import CategoryCreate from "@/components/categorys/CategoryCreate";
 import commonFetch from "../lib/commonFetch";
 import { notFound } from "next/navigation";
+import CategoryLists from "@/components/categorys/CategoryLists";
 
 export interface Category {
   id: number;
@@ -13,12 +14,8 @@ export default async function Categorys() {
   if (!categorys) notFound();
 
   return (
-    <div className="flex flex-col gap-2">
-      {categorys.map((c) => (
-        <div key={c.id} className="w-fit border p-2">
-          {c.name}
-        </div>
-      ))}
+    <div className="flex flex-col gap-3 items-center">
+      <CategoryLists categorys={categorys} />
       <CategoryCreate />
     </div>
   );

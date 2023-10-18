@@ -27,3 +27,48 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: false });
   }
 }
+
+export async function PUT(request: NextRequest) {
+  const id = request.nextUrl.searchParams.get("id");
+  if (!id) {
+    return NextResponse.json({}, { status: 404 });
+  }
+  const body = await request.json();
+  try {
+    await prisma.category.update({
+      where: {
+        id: Number(id),
+      },
+      data: body,
+    });
+    return NextResponse.json({ success: true });
+  } catch {
+    return NextResponse.json({ success: false });
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  const id = request.nextUrl.searchParams.get("id");
+  if (!id) {
+    return NextResponse.json({}, { status: 404 });
+  }
+  try {
+    // 카테고리 삭제전 해당 카테고리에 있는 Post들 전부 미분류로
+    await prisma.posts.updateMany({
+      where: {
+        categoryId: Number(id),
+      },
+      data: {
+        categoryId: 1,
+      },
+    });
+    await prisma.category.delete({
+      where: {
+        id: Number(id),
+      },
+    });
+    return NextResponse.json({ success: true });
+  } catch {
+    return NextResponse.json({ success: false });
+  }
+}

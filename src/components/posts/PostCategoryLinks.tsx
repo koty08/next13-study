@@ -15,7 +15,7 @@ export default function PostCategoryLinks({ categorys }: { categorys: Category[]
       <LinkButton
         href={`/posts`}
         text={"전체"}
-        className={`${category === "undefined" && "bg-green-300"}`}
+        className={`${category === "undefined" && "bg-green-200"}`}
         additionalText={`${categorys.reduce((p, c) => p + c.count, 0)}`}
       />
       {categorys.map((c) => (
@@ -24,7 +24,7 @@ export default function PostCategoryLinks({ categorys }: { categorys: Category[]
           href={`/posts/${c.name}`}
           text={c.name}
           additionalText={`${c.count}`}
-          className={`${category === c.name && "bg-green-300"}`}
+          className={`${category === c.name && "bg-green-200"}`}
         />
       ))}
     </div>

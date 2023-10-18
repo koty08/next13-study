@@ -5,6 +5,9 @@ import Button from "../common/Button";
 import useForm from "@/hooks/useForm";
 import { Category } from "@/app/categorys/page";
 import commonFetch from "@/app/lib/commonFetch";
+import { useState } from "react";
+import TagsInputBox from "./TagsInputBox";
+import { PostData } from "@/app/posts/[category]/page";
 
 interface PostPayload {
   title: string;
@@ -16,7 +19,7 @@ interface PostPayload {
 interface PostFormProps {
   type: "CREATE" | "UPDATE";
   post_id?: string;
-  originalData?: PostPayload;
+  originalData?: PostData;
   categorys: Category[];
 }
 
@@ -34,7 +37,10 @@ export default function PostForm({ type, post_id, originalData, categorys }: Pos
     onSubmit: async (values) => {
       const res = await commonFetch<{ success: boolean }>(type === "CREATE" ? "/post" : `/post?id=${post_id}`, undefined, {
         method: type === "CREATE" ? "POST" : "PUT",
-        body: JSON.stringify(values),
+        body: JSON.stringify({
+          ...values,
+          tags: tags.join(","),
+        }),
       });
       if (res && res.success) {
         router.push("/posts");
@@ -43,6 +49,7 @@ export default function PostForm({ type, post_id, originalData, categorys }: Pos
     },
     validator: PostValidator,
   });
+  const [tags, setTags] = useState<string[]>(originalData?.tags ? originalData.tags.split(",") : []);
 
   return (
     <div className="w-1/2 border p-5 flex flex-col gap-2">
@@ -69,6 +76,7 @@ export default function PostForm({ type, post_id, originalData, categorys }: Pos
           ))}
         </select>
       </div>
+      <TagsInputBox tags={tags} setTags={setTags} />
       <div className="flex mt-2 gap-2 justify-end">
         <Button text={type === "CREATE" ? "생성" : "수정"} onClick={handleSubmit} className="w-fit" disabled={isLoading} />
         <Button text="뒤로가기" onClick={() => router.back()} className="w-fit" />

@@ -16,6 +16,7 @@ model posts {
   views Int
   category category @relation(fields: [categoryId], references: [id])
   categoryId Int
+  tags String?
 }
 
 model category {

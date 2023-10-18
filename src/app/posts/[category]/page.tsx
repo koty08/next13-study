@@ -12,6 +12,7 @@ export interface PostData {
   register_date: string;
   views: number;
   categoryId: number;
+  tags: string | null;
 }
 
 export interface PostDataResponse {
@@ -34,7 +35,7 @@ export default async function Posts({
     { cache: "no-store" }
   );
   const categorys = await commonFetch<Category[]>("/category", undefined, { cache: "no-store" });
-  if (!data) notFound();
+  if (!data || !categorys || !categorys.map((c) => c.name).includes(category)) notFound();
 
   return (
     <div>

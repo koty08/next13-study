@@ -8,7 +8,8 @@ export default function Pagination({ count }: { count: number }) {
   const searchParams = useSearchParams();
   const q_page = searchParams.get("page");
 
-  const calcPage = Math.floor(count / 8);
+  let calcPage = Math.floor(count / 8);
+  if (!(count % 8)) calcPage -= 1;
 
   return (
     <div className="flex gap-3">
