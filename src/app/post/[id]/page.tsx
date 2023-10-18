@@ -1,6 +1,7 @@
 import commonFetch from "@/app/lib/commonFetch";
 import { PostData } from "@/app/posts/[category]/page";
 import DeleteButton from "@/components/posts/DeleteButton";
+import MarkDownViewer from "@/components/posts/MarkDownViewer";
 import { TagsList } from "@/components/posts/TagsInputBox";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -22,7 +23,9 @@ export default async function Post({ params }: { params: { id: string } }) {
         </div>
         <div>{`${post.views} Views`}</div>
         <div>{post.tags && <TagsList tags={post.tags.split(",")} />}</div>
-        <div className="mt-[30px] border-l-4 px-3 whitespace-pre-wrap">{post.content}</div>
+        <div className="mt-[30px]">
+          <MarkDownViewer content={post.content} />
+        </div>
         <div className="flex gap-2 justify-end">
           <Link
             href={`/post/${params.id}/update`}

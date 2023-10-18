@@ -8,6 +8,7 @@ import commonFetch from "@/app/lib/commonFetch";
 import { useState } from "react";
 import TagsInputBox from "./TagsInputBox";
 import { PostData } from "@/app/posts/[category]/page";
+import MDEditor from "@uiw/react-md-editor";
 
 interface PostPayload {
   title: string;
@@ -25,7 +26,7 @@ interface PostFormProps {
 
 export default function PostForm({ type, post_id, originalData, categorys }: PostFormProps) {
   const router = useRouter();
-  const { values, errors, isLoading, handleChange, handleSubmit } = useForm<PostPayload>({
+  const { values, errors, isLoading, handleChange, handleSubmit, mdEditorChange } = useForm<PostPayload>({
     initialVal: originalData
       ? originalData
       : {
@@ -51,18 +52,30 @@ export default function PostForm({ type, post_id, originalData, categorys }: Pos
   });
   const [tags, setTags] = useState<string[]>(originalData?.tags ? originalData.tags.split(",") : []);
 
+  const onPasted = async (event: React.ClipboardEvent) => {
+    const file = event.clipboardData.files.item(0);
+    if (file) {
+      const res = await commonFetch<{ success: boolean; filename: string }>("/file", undefined, {
+        method: "POST",
+        body: file,
+      });
+      if (res && res.success) {
+        mdEditorChange(values.content + `![](/${res.filename})`);
+      }
+    }
+  };
+
   return (
     <div className="w-1/2 border p-5 flex flex-col gap-2">
       <DefaultInput label="제목" name="title" value={values.title} handleChange={handleChange} error={errors?.title} />
       <DefaultInput label="작성자" name="author" value={values.author} handleChange={handleChange} error={errors?.author} />
       <label className="block">
         <span className="block font-bold text-slate-700">내용</span>
-        <textarea
-          name="content"
+        <MDEditor
           value={values.content}
-          maxLength={1000}
           className="w-full h-[200px] mt-1 px-2 py-1 appearance-none border border-teal-400 shadow-sm rounded resize-none focus:outline-none focus:border-teal-500"
-          onChange={handleChange}
+          onChange={(val) => mdEditorChange(val)}
+          onPaste={onPasted}
         />
         <p className="text-red-600 font-bold text-sm">{errors?.content}</p>
       </label>

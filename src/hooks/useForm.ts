@@ -11,7 +11,11 @@ export default function useForm<T>({ initialVal, onSubmit, validator }: useFormP
   const [errors, setErrors] = useState<Record<keyof T, string>>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const mdEditorChange = (val: string | undefined) => {
+    setValues({ ...values, content: val });
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = event.target;
     setValues({ ...values, [name]: name === "categoryId" ? Number(value) : value });
   };
@@ -33,5 +37,6 @@ export default function useForm<T>({ initialVal, onSubmit, validator }: useFormP
     isLoading,
     handleChange,
     handleSubmit,
+    mdEditorChange,
   };
 }
