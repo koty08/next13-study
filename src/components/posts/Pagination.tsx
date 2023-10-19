@@ -12,7 +12,7 @@ export default function Pagination({ count }: { count: number }) {
   if (!(count % 8)) calcPage -= 1;
 
   return (
-    <div className="flex gap-3">
+    <div className="flex gap-3 justify-center">
       {calcPage >= 1 &&
         [...Array(calcPage + 1).keys()].map((e) => {
           const idx = `${e + 1}`;

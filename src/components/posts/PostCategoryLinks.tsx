@@ -11,7 +11,7 @@ export default function PostCategoryLinks({ categorys }: { categorys: Category[]
   if (!categorys) return <></>;
 
   return (
-    <div className="flex w-1/2 justify-start gap-3">
+    <div className="w-fit flex flex-col gap-3">
       <LinkButton
         href={`/posts`}
         text={"전체"}

@@ -15,7 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" data-locator-target="vscode">
       <body className={open_sans.className}>
-        <div className="h-screen px-5">
+        <div id="main" className="h-screen px-5">
           <NavBar />
           {children}
         </div>
