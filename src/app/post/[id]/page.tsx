@@ -2,6 +2,7 @@ import commonFetch from "@/app/lib/commonFetch";
 import { PostData } from "@/app/posts/[category]/page";
 import DeleteButton from "@/components/posts/DeleteButton";
 import MarkDownViewer from "@/components/posts/MarkDownViewer";
+import PostIndex from "@/components/posts/PostIndex";
 import { TagsList } from "@/components/posts/TagsInputBox";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -12,7 +13,7 @@ export default async function Post({ params }: { params: { id: string } }) {
   if (!post) return notFound();
 
   return (
-    <div className="mt-[64px] flex justify-center">
+    <div className="mt-[64px] flex justify-center gap-5 relative">
       <div className="w-1/2 flex flex-col gap-5">
         <h1 className="text-3xl font-bold">{post.title}</h1>
         <div className="flex gap-2 items-end">
@@ -36,6 +37,7 @@ export default async function Post({ params }: { params: { id: string } }) {
           <DeleteButton id={params.id} />
         </div>
       </div>
+      <PostIndex />
     </div>
   );
 }
