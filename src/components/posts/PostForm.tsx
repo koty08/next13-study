@@ -9,6 +9,7 @@ import { useState } from "react";
 import TagsInputBox from "./TagsInputBox";
 import { PostData } from "@/app/posts/[category]/page";
 import MDEditor from "@uiw/react-md-editor";
+import { CustomDeleteImage } from "./MarkDownViewer";
 
 interface PostPayload {
   title: string;
@@ -65,17 +66,42 @@ export default function PostForm({ type, post_id, originalData, categorys }: Pos
     }
   };
 
+  const onImageDeleted = async (src: string | undefined) => {
+    const res = await commonFetch<{ success: boolean }>(
+      "/file",
+      { path: src },
+      {
+        method: "DELETE",
+      }
+    );
+    if (res && res.success) {
+      mdEditorChange(values.content.replace(`![](${src})`, ""));
+    }
+  };
+
   return (
-    <div className="w-1/2 border p-5 flex flex-col gap-2">
+    <div className="w-full border p-5 flex flex-col gap-2">
       <DefaultInput label="제목" name="title" value={values.title} handleChange={handleChange} error={errors?.title} />
       <DefaultInput label="작성자" name="author" value={values.author} handleChange={handleChange} error={errors?.author} />
       <label className="block">
         <span className="block font-bold text-slate-700">내용</span>
         <MDEditor
           value={values.content}
-          className="w-full h-[200px] mt-1 px-2 py-1 appearance-none border border-teal-400 shadow-sm rounded resize-none focus:outline-none focus:border-teal-500"
+          className="w-full mt-1 px-2 py-1 appearance-none border border-teal-400 shadow-sm rounded resize-none focus:outline-none focus:border-teal-500"
+          height={600}
           onChange={(val) => mdEditorChange(val)}
           onPaste={onPasted}
+          previewOptions={{
+            components: {
+              img: (props) =>
+                CustomDeleteImage({
+                  ...props,
+                  onClick: () => {
+                    onImageDeleted(props.src);
+                  },
+                }),
+            },
+          }}
         />
         <p className="text-red-600 font-bold text-sm">{errors?.content}</p>
       </label>
@@ -117,7 +143,7 @@ function DefaultInput({
       <input
         name={name}
         value={value}
-        className="w-full mt-1 px-2 py-1 appearance-none border border-teal-400 shadow-sm rounded focus:outline-none focus:border-teal-500"
+        className="w-1/3 mt-1 px-2 py-1 appearance-none border border-teal-400 shadow-sm rounded focus:outline-none focus:border-teal-500"
         onChange={handleChange}
       />
       <p className="text-red-600 font-bold text-sm">{error}</p>

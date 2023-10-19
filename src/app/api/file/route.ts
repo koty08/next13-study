@@ -8,8 +8,22 @@ export async function POST(request: NextRequest) {
     const file = await (await request.blob()).arrayBuffer();
     await fs.writeFile(`./public/${filename}`, Buffer.from(file));
     return NextResponse.json({ success: true, filename: filename });
-  } catch (e) {
-    console.log(e);
+  } catch {
+    return NextResponse.json({ success: false });
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  const path = request.nextUrl.searchParams.get("path");
+  if (path) {
+    try {
+      const fullPath = `./public${path}`;
+      await fs.rm(fullPath);
+      return NextResponse.json({ success: true });
+    } catch {
+      return NextResponse.json({ success: false });
+    }
+  } else {
     return NextResponse.json({ success: false });
   }
 }
