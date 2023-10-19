@@ -2,9 +2,9 @@ import NavBar from "@/components/common/NavBar";
 import Footer from "@/components/common/Footer";
 import "./globals.css";
 import type { Metadata } from "next";
-import { Open_Sans } from "next/font/google";
+import { Noto_Sans_KR } from "next/font/google";
 
-const open_sans = Open_Sans({ subsets: ["latin"] });
+const open_sans = Noto_Sans_KR({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Next 13 App Test",
@@ -13,10 +13,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-locator-target="vscode">
+    <html lang="ko" data-locator-target="vscode">
       <body className={open_sans.className}>
-        <div id="main" className="h-screen px-5">
-          <NavBar />
+        <NavBar />
+        <div id="main" className="px-5">
           {children}
         </div>
         <Footer />

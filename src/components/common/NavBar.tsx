@@ -7,7 +7,7 @@ const links = [
 
 export default function NavBar() {
   return (
-    <div className="flex mx-2 my-4 justify-between">
+    <div className="flex mx-4 my-4 justify-between">
       <Link href={"/"} className="text-xl font-bold">
         Main
       </Link>
