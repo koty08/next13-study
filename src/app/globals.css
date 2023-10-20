@@ -17,3 +17,43 @@ body::-webkit-scrollbar-track {
   background-color: rgb(211, 211, 211);
   border-radius: 5px;
 }
+
+html {
+  --scroll-behavior: smooth !important;
+}
+
+@keyframes scale-1 {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0.6);
+  }
+}
+
+@keyframes scale-2 {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0.7);
+  }
+}
+
+@keyframes scale-3 {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0.8);
+  }
+}
+
+@keyframes scale-4 {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0.9);
+  }
+}
