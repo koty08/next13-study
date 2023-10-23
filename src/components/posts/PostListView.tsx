@@ -18,7 +18,7 @@ export default async function PostListView({ data, categorys }: { data: PostData
                 <span>{post.title}</span>
                 <span className="text-xs text-gray-400">{` (${post.author})`}</span>
               </div>
-              <span>{new Intl.DateTimeFormat("ko", { dateStyle: "short", timeStyle: "short" }).format(new Date(post.register_date))}</span>
+              <span>{new Intl.DateTimeFormat("ko", { dateStyle: "short" }).format(new Date(post.register_date))}</span>
             </div>
             <div className="truncate">{post.content}</div>
             {post.tags && <TagsList tags={post.tags.split(",")} />}

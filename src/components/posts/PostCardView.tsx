@@ -17,9 +17,7 @@ export default async function PostCardView({ data }: { data: PostDataResponse })
                 <Image fill src={"/no-image.png"} alt="image" style={{ objectFit: "contain" }}></Image>
               )}
             </div>
-            <div className="text-sm mt-2">
-              {new Intl.DateTimeFormat("ko", { dateStyle: "short", timeStyle: "short" }).format(new Date(post.register_date))}
-            </div>
+            <div className="text-sm mt-2">{new Intl.DateTimeFormat("ko", { dateStyle: "short" }).format(new Date(post.register_date))}</div>
             <h2 className="text-lg font-bold">{post.title}</h2>
           </Link>
         );

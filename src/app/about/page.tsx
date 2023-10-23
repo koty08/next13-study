@@ -2,7 +2,7 @@
 
 import "aos/dist/aos.css";
 import AOS from "aos";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface CardStyles {
   className: string;
@@ -33,10 +33,19 @@ export default function About() {
 
   useEffect(() => {
     AOS.init({
-      anchorPlacement: "bottom-bottom",
       duration: 500,
+      disableMutationObserver: false,
+      debounceDelay: 50,
     });
+    window.addEventListener("scroll", scrollHandler);
+    return () => {
+      window.removeEventListener("scroll", scrollHandler);
+    };
   }, []);
+
+  const scrollHandler = () => {
+    AOS.refresh();
+  };
 
   return (
     <div>

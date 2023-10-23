@@ -20,7 +20,7 @@ export default async function Post({ params }: { params: { id: string } }) {
         <div className="flex gap-2 items-end">
           <h2 className="font-bold">{post.author}</h2>
           <span className="h-fit text-sm text-slate-400">
-            {new Intl.DateTimeFormat("ko", { dateStyle: "short", timeStyle: "short" }).format(new Date(post.register_date))}
+            {new Intl.DateTimeFormat("ko", { dateStyle: "short" }).format(new Date(post.register_date))}
           </span>
         </div>
         <div>{`${post.views} Views`}</div>
