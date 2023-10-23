@@ -2,6 +2,7 @@ import commonFetch from "@/app/lib/commonFetch";
 import { PostData } from "@/app/posts/[category]/page";
 import DeleteButton from "@/components/posts/DeleteButton";
 import MarkDownViewer from "@/components/posts/MarkDownViewer";
+import PostComment from "@/components/posts/PostComment";
 import PostIndex from "@/components/posts/PostIndex";
 import { TagsList } from "@/components/posts/TagsInputBox";
 import Link from "next/link";
@@ -36,6 +37,7 @@ export default async function Post({ params }: { params: { id: string } }) {
           </Link>
           <DeleteButton id={params.id} />
         </div>
+        <PostComment />
       </div>
       <PostIndex />
     </div>

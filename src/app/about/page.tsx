@@ -39,8 +39,11 @@ export default function About() {
   }, []);
 
   return (
-    <div className="">
-      <div className="h-[100vh] flex justify-center items-center text-4xl font-bold">Scroll To Show</div>
+    <div>
+      <div className="h-[100vh] flex flex-col justify-center items-center text-4xl font-bold">
+        Scroll To Show
+        <div className="animate-bounce w-6 h-6">⬇</div>
+      </div>
       <div className="h-[250vh] flex flex-col relative items-center pb-[50px]">
         {[...Array(4).keys()].map((i) => (
           <React.Fragment key={i}>
@@ -61,7 +64,7 @@ export default function About() {
           </React.Fragment>
         ))}
       </div>
-      <div className={`h-[50vh] bg-gray-500`} data-aos="fade-up">
+      <div className={`h-[100vh] bg-gray-500`} data-aos="fade-up">
         <div className="">{5}</div>
       </div>
     </div>

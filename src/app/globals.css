@@ -19,7 +19,7 @@ body::-webkit-scrollbar-track {
 }
 
 html {
-  --scroll-behavior: smooth !important;
+  scroll-behavior: smooth !important;
 }
 
 @keyframes scale-1 {
